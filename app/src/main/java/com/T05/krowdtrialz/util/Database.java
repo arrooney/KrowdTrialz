@@ -553,7 +553,6 @@ public class Database {
                     }
 
                     if (!matchingExperiments.isEmpty()) {
-                        Log.d(TAG, "SADFASDF");
                         ArrayList<Experiment> output = new ArrayList<>();
                         output.addAll(resultSet);
                         callback.onSuccess(output);
