@@ -520,22 +520,17 @@ public class Database {
      */
     public void getExperimentsByTags (ArrayList<String> tags, QueryExperimentsCallback callback) {
 
-        for (int i = 0; i < tags.size(); i++) {
-            tags.set(i, tags.get(i).toLowerCase());
-        }
-
-        db = FirebaseFirestore.getInstance();
-
         Set<Experiment> resultSet = new HashSet<>();
 
         CollectionReference allExperimentsCollectionReference = db.collection("AllExperiments");
 
         for (String tag: tags) {
-            allExperimentsCollectionReference.whereArrayContains("tags", tag).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            allExperimentsCollectionReference.whereArrayContains("tags", tag.toLowerCase()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     Set<Experiment> matchingExperiments = new HashSet<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Log.d(TAG, document.get("type").toString());
                         if (document.get("type").toString().equals("Binomial")) {
                             BinomialExperiment experiment = document.toObject(BinomialExperiment.class);
                             matchingExperiments.add(experiment);
@@ -557,7 +552,8 @@ public class Database {
                         resultSet.retainAll(matchingExperiments);
                     }
 
-                    if (matchingExperiments.size() > 0) {
+                    if (!matchingExperiments.isEmpty()) {
+                        Log.d(TAG, "SADFASDF");
                         ArrayList<Experiment> output = new ArrayList<>();
                         output.addAll(resultSet);
                         callback.onSuccess(output);

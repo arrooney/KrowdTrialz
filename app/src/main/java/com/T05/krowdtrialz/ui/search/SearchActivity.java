@@ -89,7 +89,7 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
 
             @Override
             public void onFailure() {
-                Log.e(TAG, "Error Searching Database");
+                Log.e(TAG, "Error Searching Database (no results)");
             }
         });
     }
